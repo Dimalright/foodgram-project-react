@@ -202,9 +202,9 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                     'Есть задублированные ингредиенты!'
                 )
             ingredients_list.append(ingredient_id)
-        if data['cooking_time'] < 1:
+        if data['cooking_time'] < 1 or data['cooking_time'] > 180:
             raise ValidationError(
-                'Время приготовления должно быть не менее 1 минуты!'
+                'Время приготовления должно быть от 1 до 180 мин!'
             )
         return data
 
@@ -296,7 +296,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
             queryset=Favorite.objects.all(),
             fields=('user', 'recipe'),
             message='Рецепт уже в избранном')
-            ]
+        ]
 
     def to_representation(self, instance):
         request = self.context.get('request')
