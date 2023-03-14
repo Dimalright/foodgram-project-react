@@ -1,5 +1,6 @@
 from colorfield.fields import ColorField
-from django.core.validators import MinValueValidator, RegexValidator
+from django.core.validators import (MaxValueValidator, MinValueValidator,
+                                    RegexValidator)
 from django.db import models
 from users.models import User
 
@@ -24,7 +25,7 @@ class Tag(models.Model):
         max_length=100,
         verbose_name="Название тэга",
         validators=[name_validator]
-        )
+    )
     color = ColorField(format="hex",
                        verbose_name="Цветовой код",
                        validators=[color_validator]
@@ -86,7 +87,9 @@ class Recipe(models.Model):
     )
     cooking_time = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(
-            1, message="Время приготовления должно быть не менее 1 минуты!")],
+            1, message="Время приготовления должно быть не менее 1 минуты!"),
+            MaxValueValidator(
+            180,  message="Время приготовления должно быть не более 180 минут!")],
         verbose_name="Время приготовления, мин.",
     )
     tags = models.ManyToManyField(
@@ -116,10 +119,12 @@ class IngredientsInRecipe(models.Model):
         verbose_name="Ингредиенты для рецепта")
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, verbose_name="Рецепт")
-    amount = models.FloatField(
+    amount = models.PositiveIntegerField(
         default=1,
         validators=[MinValueValidator(
-            0.001, message="Ингредиента должно быть не менее 0.001.")],
+            1, message="Ингредиента должно быть не менее 1."),
+            MaxValueValidator(
+            1000, message="Ингредиента должно быть не более 1000.")],
         verbose_name="Количество ингредиента",
     )
 

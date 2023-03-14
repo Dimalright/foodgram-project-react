@@ -53,6 +53,7 @@ class Follow(models.Model):
         verbose_name="Блогер")
 
     class Meta:
+        ordering = ('-author_id',)
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
         constraints = [
