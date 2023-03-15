@@ -64,7 +64,11 @@ class Recipe(models.Model):
     """
     Модель рецептов
     """
-
+    name_validator = RegexValidator(
+        regex=r'^[a-zA-Zа-яА-Я]+$',
+        message='Разрешены только буквы',
+        code='invalid_recipe_name'
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -73,6 +77,7 @@ class Recipe(models.Model):
     name = models.CharField(
         max_length=200,
         verbose_name="Название рецепта",
+        validators=[name_validator]
     )
     image = models.ImageField(
         verbose_name="Фото рецепта", blank=True, upload_to="recipes/images")
