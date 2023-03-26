@@ -57,7 +57,7 @@ data/ingredients.json
 #### Клонирование репозитория
 
 ```bash
-https://github.com/StasKrut/foodgram-project-react.git
+https://github.com/Dimalright/foodgram-project-react.git
 ```
 #### В директории infra создать фаил .env и заполнить своими данными:
 ```bash
